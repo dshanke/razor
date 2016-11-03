@@ -1,0 +1,2 @@
+will use the google test framework for making this a test driven development.
+(This may not be a good choice for TDD but I am exploring gtest framework and am taking the opportunity to learn gtest framework)
