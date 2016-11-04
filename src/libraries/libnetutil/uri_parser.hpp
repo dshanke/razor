@@ -2,70 +2,10 @@
 #define __URI_PARSER__HPP__
 
 #include "tstring.hpp"
+#include "uri_tokens.hpp"
 
 namespace razor {
 
-	struct UriTokens {
-		typedef struct Authority {
-			typedef struct UserInfo {
-				tstring UserName;
-				tstring Password;
-				bool IsEmpty() {
-					return (UserName.empty());
-				}
-			} UserInfo_t;
-			typedef struct HostInfo {
-				tstring Host;
-				tstring Port;
-				bool IsEmpty() {
-					return (Host.empty());
-				}
-			} HostInfo_t;
-
-			void SetAuthorityInfo(const tstring & strAuthority) {
-				size_t pos = strAuthority.rfind(TCHAR('@'));
-				tstring hostPort = strAuthority;
-				tstring userpwd;
-				if (tstring::npos != pos) {
-					hostPort = strAuthority.substr(pos + 1);
-					if (0 != pos) {
-						userpwd = strAuthority.substr(0, pos);
-					}
-				}
-				pos = hostPort.find(TCHAR(':'));
-				if (tstring::npos != pos) {
-					HostInfo.Port = hostPort.substr(pos + 1);
-					hostPort = hostPort.substr(0, pos);
-				}
-				HostInfo.Host = hostPort;
-
-				if (!userpwd.empty()) {
-					UserInfo.UserName = userpwd;
-					pos = userpwd.find(TCHAR(':'));
-					if (tstring::npos != pos) {
-						UserInfo.UserName = userpwd.substr(0, pos);
-						UserInfo.Password = userpwd.substr(pos + 1);
-					}
-				}
-			}
-
-			bool IsEmpty() {
-				return (HostInfo.IsEmpty() && UserInfo.IsEmpty());
-			}
-
-			bool IsValid() {
-				return false;
-			}
-			UserInfo_t UserInfo;
-			HostInfo_t HostInfo;
-		} Authority_t;
-
-		tstring Scheme;
-		Authority_t Authority;
-		tstring Path;
-		tstring Query;
-		tstring Fragment;
-	};
 #if 0
 	struct ParsedTokenInfo {
 		size_t StartPos = tstring::npos;

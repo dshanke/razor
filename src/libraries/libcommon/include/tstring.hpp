@@ -14,6 +14,11 @@ typedef char TCHAR;
 typedef std::basic_string<char> tstring;
 #endif
 
-inline bool RegExMatch(const tstring & strSrc, const tstring & strExpr, bool bIgnoreCase = true);
+namespace sutil {
+
+	tstring StringTrim(const tstring & strSrc, const tstring & whitespace = _T(" \t\r\n\v"));
+
+	bool RegExMatch(const tstring & strSrc, const tstring & strExpr, bool bIgnoreCase = true);
+}
 
 #endif

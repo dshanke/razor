@@ -9,7 +9,14 @@ namespace razor {
 	class UriImpl : public IUri {
 	public:
 		UriImpl(const tstring & strUri);
-		~UriImpl() {};
+		virtual ~UriImpl() {};
+
+		UriImpl(const UriImpl & objUri);
+		UriImpl& operator= (const UriImpl & objUri);
+
+		bool operator==(const UriImpl & objUri);
+		bool operator==(const tstring & strUri);
+
 		tstring Scheme() const;
 		tstring User() const;
 		tstring Password() const;
@@ -25,6 +32,7 @@ namespace razor {
 
 	private:
 		UriTokens mUriTokens;
+		tstring mOrigUri;
 	};
 }
 

@@ -48,13 +48,13 @@ namespace razor {
 
 		//Extract Fragment
 		if (firstHashPos != tstring::npos) {
-			uriTokens.Fragment = strUri.substr(firstHashPos + 1);
+			uriTokens.Fragment(strUri.substr(firstHashPos + 1));
 		}
 
 		//Extract Query
 		if (firstQuestionPos != tstring::npos) {
 			if (firstQuestionPos < firstHashPos) { //occurs before fragment
-				uriTokens.Query = strUri.substr(firstQuestionPos, firstHashPos - firstQuestionPos);
+				uriTokens.Query(strUri.substr(firstQuestionPos, firstHashPos - firstQuestionPos));
 			}
 			else { //if not Query part does not exist
 				firstQuestionPos = tstring::npos;
@@ -70,7 +70,7 @@ namespace razor {
 			{
 				tstring scheme = strUri.substr(0, firstColonPos);
 				std::transform(scheme.begin(), scheme.end(), scheme.begin(), ::tolower);
-				uriTokens.Scheme = scheme;
+				uriTokens.Scheme(scheme);
 			}
 			else {
 				//if the first colon position is after double slash/slash/query/fragment then we do not have a scheme
@@ -105,13 +105,13 @@ namespace razor {
 			&& (firstQuestionPos != tstring::npos && firstSlashPos < firstQuestionPos)) //should be occurring before Query
 		{
 			if (firstQuestionPos != tstring::npos) {
-				uriTokens.Path = strUri.substr(firstSlashPos, firstQuestionPos - firstSlashPos);
+				uriTokens.Path(strUri.substr(firstSlashPos, firstQuestionPos - firstSlashPos));
 			}
 			else if (firstHashPos != tstring::npos) {
-				uriTokens.Path = strUri.substr(firstSlashPos, firstHashPos - firstSlashPos);
+				uriTokens.Path(strUri.substr(firstSlashPos, firstHashPos - firstSlashPos));
 			}
 			else {
-				uriTokens.Path = strUri.substr(firstSlashPos);
+				uriTokens.Path(strUri.substr(firstSlashPos));
 			}
 		}
 
@@ -141,7 +141,7 @@ namespace razor {
 			else {
 				strAuthority = strUri.substr(authorityStartPos);
 			}
-			uriTokens.Authority.SetAuthorityInfo(strAuthority);
+			uriTokens.Authority(strAuthority);
 		}
 		return uriTokens;
 	}

@@ -103,9 +103,11 @@ TEST(tstringtest, comparevalues) {
 
 INSTANTIATE_TEST_CASE_P(Default, URIValuesTest,
 	testing::Values(
-	uri_data("http://localhost:80/homepage.htm?query=value/#fragment", "http", "", "", "localhost", "", "/homepage.htm", "?query=value/", "fragment", false, false, true),
-	uri_data("http://localhost:80/homepage.htm?query=value/#fragment", "ftp", "", "", "localhost", "", "/clusterfile", "?query=value/", "fragment", false, false, true)
-));
+	uri_data("https://localhost:80/homepage.htm?query=value/#fragment", "https", "", "", "localhost", "80", "/homepage.htm", "?query=value/", "fragment", false, false, true),
+	uri_data("   ftp://user:passwd@classicserver/clusterfile?query=value/#fragment   ", "ftp", "user", "passwd", "classicserver", "", "/clusterfile", "?query=value/", "fragment", false, false, true),
+	uri_data("file:///user:passwd@classicserver/clusterfile?query=value/#fragment", "file", "", "", "", "", "/user:passwd@classicserver/clusterfile", "?query=value/", "fragment", false, false, true),
+	uri_data("fil@e:///user:passwd@classicserver/clusterfile?query=value/#fragment", "fil@e", "", "", "", "", "/user:passwd@classicserver/clusterfile", "?query=value/", "fragment", false, false, false)
+	));
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
