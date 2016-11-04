@@ -10,6 +10,7 @@ namespace razor {
 	
 	class IUri {
 	public:
+		virtual ~IUri() {}
 		virtual tstring Scheme() const = 0;
 		virtual tstring User() const = 0;
 		virtual tstring Password() const = 0;
@@ -21,12 +22,8 @@ namespace razor {
 		
 		virtual bool IsHostAnIP() const = 0;
 		virtual bool IsEmpty() const = 0;
-		virtual bool IsValid() const = 0;
-		
-	};
+		virtual bool IsWellFormed() const = 0;
 
-	class parser {
-	public:
 		static IUri* make_uri(const tstring & strUri);
 	};
 

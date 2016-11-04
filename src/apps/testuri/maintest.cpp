@@ -15,7 +15,7 @@ struct URITestFixture : public ::testing::Test {
 	void SetUp(const tstring & strUri) {
 		// code here will execute just before the test ensues 
 		try {
-			pUri = razor::parser::make_uri(strUri);
+			pUri = razor::IUri::make_uri(strUri);
 		}
 		catch (razor::baduri_exception) {
 		}
@@ -47,10 +47,10 @@ struct uri_data {
 	tstring Fragment;
 	bool IsHostAnIP;
 	bool IsEmpty;
-	bool IsValid;
+	bool IsWellFormed;
 
-	uri_data(const tstring & Uri, const tstring & Scheme, const tstring & User, const tstring & Password, const tstring & Host, const tstring & Port, const tstring & Path, const tstring & Query, const tstring & Fragment, const bool IsHostAnIP, const bool IsEmpty, const bool IsValid)
-		:Uri(Uri), Scheme(Scheme), User(User), Password(Password), Host(Host), Port(Port), Path(Path), Query(Query), Fragment(Fragment), IsHostAnIP(IsHostAnIP), IsEmpty(IsEmpty), IsValid(IsValid)
+	uri_data(const tstring & Uri, const tstring & Scheme, const tstring & User, const tstring & Password, const tstring & Host, const tstring & Port, const tstring & Path, const tstring & Query, const tstring & Fragment, const bool IsHostAnIP, const bool IsEmpty, const bool IsWellFormed)
+		:Uri(Uri), Scheme(Scheme), User(User), Password(Password), Host(Host), Port(Port), Path(Path), Query(Query), Fragment(Fragment), IsHostAnIP(IsHostAnIP), IsEmpty(IsEmpty), IsWellFormed(IsWellFormed)
 	{
 	}
 
@@ -67,7 +67,7 @@ struct uri_data {
 			<< ", Fragment: " << obj.Fragment
 			<< ", IsHostAnIP: " << obj.IsHostAnIP
 			<< ", IsEmpty: " << obj.IsEmpty
-			<< ", IsValid: " << obj.IsValid;
+			<< ", IsWellFormed: " << obj.IsWellFormed;
 	}
 };
 
@@ -82,10 +82,10 @@ struct URIValuesTest : URITestFixture, testing::WithParamInterface<uri_data>
 TEST_P(URIValuesTest, CheckURIInitialisation)
 {
 	uri_data as = GetParam();
-	EXPECT_EQ(as.IsValid, pUri->IsValid());
+	EXPECT_EQ(as.IsWellFormed, pUri->IsWellFormed());
 	EXPECT_EQ(as.IsHostAnIP, pUri->IsHostAnIP());
 	EXPECT_EQ(as.IsEmpty, pUri->IsEmpty());
-	EXPECT_EQ(as.Uri, pUri->Scheme());
+	EXPECT_EQ(as.Scheme, pUri->Scheme());
 	EXPECT_EQ(as.User, pUri->User());
 	EXPECT_EQ(as.Password, pUri->Password());
 	EXPECT_EQ(as.Host, pUri->Host());
@@ -103,13 +103,11 @@ TEST(tstringtest, comparevalues) {
 
 INSTANTIATE_TEST_CASE_P(Default, URIValuesTest,
 	testing::Values(
-	uri_data("http://localhost:80/homepage.htm?query=value/#fragment", "http", "", "", "localhost", "", "/homepage.htm", "?query=value", "fragment", false, false, true),
-	uri_data("http://localhost:80/homepage.htm?query=value/#fragment", "ftp", "", "", "localhost", "", "/clusterfile", "?query=value", "fragment", false, false, true)
+	uri_data("http://localhost:80/homepage.htm?query=value/#fragment", "http", "", "", "localhost", "", "/homepage.htm", "?query=value/", "fragment", false, false, true),
+	uri_data("http://localhost:80/homepage.htm?query=value/#fragment", "ftp", "", "", "localhost", "", "/clusterfile", "?query=value/", "fragment", false, false, true)
 ));
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
-	int iresult = RUN_ALL_TESTS();
-	getchar();
-	return iresult;
+	return RUN_ALL_TESTS();
 }

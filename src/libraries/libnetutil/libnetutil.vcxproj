@@ -71,10 +71,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\uri.hpp" />
-    <ClInclude Include="uri_impl.h" />
+    <ClInclude Include="uri_impl.hpp" />
+    <ClInclude Include="uri_parser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="uri.cpp" />
+    <ClCompile Include="uri_parser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
